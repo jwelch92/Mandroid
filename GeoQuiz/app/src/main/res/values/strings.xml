@@ -4,5 +4,8 @@
     <string name="app_name">GeoQuiz</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="false_button">False</string>
+    <string name="true_button">True</string>
+    <string name="question_text">The Earth is a place. True or False?</string>
 
 </resources>
