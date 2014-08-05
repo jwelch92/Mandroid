@@ -2,6 +2,8 @@ package com.sinch.messagingtutorialskeleton;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -31,6 +33,27 @@ public class ListUsersActivity  extends Activity {
         setConversationList();
     }
 
+
+    public void openConversation(ArrayList<String> names, int pos) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", names.get(pos));
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> user, ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getApplicationContext(),
+                            "username: " + user.get(0).getUsername() +
+                                    ", user id: " + user.get(0).getObjectId(),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Error finding that user",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
     private void setConversationList() {
         currentUserId = ParseUser.getCurrentUser().getObjectId();
         names = new ArrayList<String>();
@@ -42,12 +65,22 @@ public class ListUsersActivity  extends Activity {
             public void done(List<ParseUser> userList, ParseException e) {
                 if (e == null) {
                     for (int i=0; i<userList.size(); i++) {
-                        names.add(userList.get(i).getUsername().toString());
+                        names.add(userList.get(i).getUsername());
                     }
 
                     usersListView = (ListView)findViewById(R.id.usersListView);
                     namesArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.user_list_item, names);
                     usersListView.setAdapter(namesArrayAdapter);
+
+                    usersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Toast.makeText(getApplicationContext(), "You clicked on user: " + position,
+                                    Toast.LENGTH_SHORT).show();
+                            openConversation(names, position);
+                        }
+                    });
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Error loading user list", Toast.LENGTH_SHORT).show();
                 }

@@ -29,14 +29,17 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Parse.initialize(this, "IMksGrBUs3Tt8ObxYnaZlvsBWk8PHpA59iLVtlrb", "7GidxRxsrv3ZVzOc6hbOUnUuaTdLYMPLEykAy00i");
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
+            Intent serviceIntent = new Intent(getApplicationContext(), ListUsersActivity.class);
+            startService(serviceIntent);
             Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
             startActivity(intent);
         }
 
         setContentView(R.layout.activity_login);
-        Parse.initialize(this, "IMksGrBUs3Tt8ObxYnaZlvsBWk8PHpA59iLVtlrb", "7GidxRxsrv3ZVzOc6hbOUnUuaTdLYMPLEykAy00i");
+
 
         loginButton = (Button)findViewById(R.id.loginButton);
         signUpButton = (Button)findViewById(R.id.signupButton);
@@ -55,6 +58,8 @@ public class LoginActivity extends Activity {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
                             Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                            Intent serviceIntent = new Intent(getApplicationContext(), ListUsersActivity.class);
+                            startService(serviceIntent);
                             Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
                             startActivity(intent);
                         } else {
@@ -81,8 +86,9 @@ public class LoginActivity extends Activity {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
-                            // start new activity
                             Toast.makeText(getApplicationContext(), "Sign Up successful", Toast.LENGTH_SHORT).show();
+                            Intent serviceIntent = new Intent(getApplicationContext(), ListUsersActivity.class);
+                            startService(serviceIntent);
                             Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
                             startActivity(intent);
                         } else {
