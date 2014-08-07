@@ -32,15 +32,21 @@ public class MessagingActivity extends Activity implements ServiceConnection, Me
     private EditText messageBodyField;
     private String messageBody;
     private MessageService.MessageServiceInterface messageService;
-    //private MessageAdapter messageAdapter;
-    //private ListView messagesList;
+    private MessageAdapter messageAdapter;
+    private ListView messagesList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.messaging);
+
         doBind();
+
+        messagesList = (ListView)findViewById(R.id.listMessages);
+        messageAdapter = new MessageAdapter(this);
+        messagesList.setAdapter(messageAdapter);
+
         Intent intent = getIntent();
         recipientId = intent.getStringExtra("RECIPIENT_ID");
 
@@ -78,12 +84,12 @@ public class MessagingActivity extends Activity implements ServiceConnection, Me
 
     @Override
     public void onIncomingMessage(MessageClient messageClient, Message message) {
-
+        messageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
     }
 
     @Override
     public void onMessageSent(MessageClient messageClient, Message message, String s) {
-        // update UI on outgoing message
+        messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
     }
 
     @Override

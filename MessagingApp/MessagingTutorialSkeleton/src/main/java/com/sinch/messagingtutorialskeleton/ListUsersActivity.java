@@ -41,10 +41,6 @@ public class ListUsersActivity  extends Activity {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> user, ParseException e) {
                 if (e == null) {
-//                    Toast.makeText(getApplicationContext(),
-//                            "username: " + user.get(0).getUsername() +
-//                                    ", user id: " + user.get(0).getObjectId(),
-//                            Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MessagingActivity.class);
                     intent.putExtra("RECIPIENT_ID", user.get(0).getObjectId());
                     startActivity(intent);
