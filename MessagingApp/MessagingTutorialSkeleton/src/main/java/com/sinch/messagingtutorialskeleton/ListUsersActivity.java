@@ -1,6 +1,7 @@
 package com.sinch.messagingtutorialskeleton;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,10 +41,13 @@ public class ListUsersActivity  extends Activity {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> user, ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getApplicationContext(),
-                            "username: " + user.get(0).getUsername() +
-                                    ", user id: " + user.get(0).getObjectId(),
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),
+//                            "username: " + user.get(0).getUsername() +
+//                                    ", user id: " + user.get(0).getObjectId(),
+//                            Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MessagingActivity.class);
+                    intent.putExtra("RECIPIENT_ID", user.get(0).getObjectId());
+                    startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Error finding that user",
@@ -75,8 +79,8 @@ public class ListUsersActivity  extends Activity {
                     usersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Toast.makeText(getApplicationContext(), "You clicked on user: " + position,
-                                    Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "You clicked on user: " + position,
+                              //      Toast.LENGTH_SHORT).show();
                             openConversation(names, position);
                         }
                     });

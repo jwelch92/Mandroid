@@ -24,17 +24,21 @@ public class LoginActivity extends Activity {
     private EditText passwordField;
     private String username;
     private String password;
+    private Intent serviceIntent;
+    private Intent intent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Parse.initialize(this, "IMksGrBUs3Tt8ObxYnaZlvsBWk8PHpA59iLVtlrb", "7GidxRxsrv3ZVzOc6hbOUnUuaTdLYMPLEykAy00i");
+
+        serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+        intent = new Intent(getApplicationContext(), ListUsersActivity.class);
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            Intent serviceIntent = new Intent(getApplicationContext(), ListUsersActivity.class);
             startService(serviceIntent);
-            Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
             startActivity(intent);
         }
 
@@ -57,10 +61,8 @@ public class LoginActivity extends Activity {
                     @Override
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
-                            Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent serviceIntent = new Intent(getApplicationContext(), ListUsersActivity.class);
+//                            Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                             startService(serviceIntent);
-                            Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Wrong username/password combo",
@@ -86,10 +88,8 @@ public class LoginActivity extends Activity {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
-                            Toast.makeText(getApplicationContext(), "Sign Up successful", Toast.LENGTH_SHORT).show();
-                            Intent serviceIntent = new Intent(getApplicationContext(), ListUsersActivity.class);
+//                            Toast.makeText(getApplicationContext(), "Sign Up successful", Toast.LENGTH_SHORT).show();
                             startService(serviceIntent);
-                            Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "There was an error signing up.",
@@ -102,6 +102,12 @@ public class LoginActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(getApplicationContext(), MessageService.class));
     }
 
 }
