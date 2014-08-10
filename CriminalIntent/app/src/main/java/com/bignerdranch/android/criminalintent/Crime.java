@@ -12,15 +12,14 @@ public class Crime {
 
     private UUID mId;
     private String mTitle;
-    private String mDate;
+    private Date mDate;
     private boolean mSolved;
-
 
     public Crime() {
         // Generate unique identifier
         mId = UUID.randomUUID();
-        Date date = new Date();
-        mDate = DateFormat.format("EEEE, MMM dd, yyyy", date).toString();
+        mDate = new Date();
+        //mDate = DateFormat.format("EEEE, MMM dd, yyyy", date).toString();
 
     }
 
@@ -29,8 +28,12 @@ public class Crime {
         return mTitle;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
     }
 
     public boolean isSolved() {
